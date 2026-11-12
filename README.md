@@ -6,6 +6,9 @@
 
 # Kumquat
 
+<p><strong>Unofficial community fork.</strong> This build is maintained independently and is not affiliated with or endorsed by the original Kumquat maintainer.</p>
+<p><a href="https://github.com/esadtatlipinar/Kumquat/releases/latest"><strong>Download the custom HAR + JSON build</strong></a> · <a href="https://github.com/iandifilippo/Kumquat">View the original upstream project</a></p>
+
 ### Drag a file. Tap ⇧. Drop it on a format.
 
 **A free, open-source file converter that lives inside your drag-and-drop.**<br/>
@@ -14,13 +17,13 @@ Images, PDFs, documents, video and audio, converted and edited without opening a
 [![macOS 14+](https://img.shields.io/badge/macOS-14%2B-000000?style=flat-square&logo=apple&logoColor=white)](#install)
 [![Swift](https://img.shields.io/badge/Swift-native-F05138?style=flat-square&logo=swift&logoColor=white)](Package.swift)
 [![MIT license](https://img.shields.io/badge/license-MIT-FF8A1F?style=flat-square)](LICENSE)
-[![Latest release](https://img.shields.io/github/v/release/iandifilippo/Kumquat?style=flat-square&color=FF5E1A&label=download)](https://github.com/iandifilippo/Kumquat/releases/latest)
-[![CI](https://img.shields.io/github/actions/workflow/status/iandifilippo/Kumquat/ci.yml?style=flat-square&label=tests)](https://github.com/iandifilippo/Kumquat/actions/workflows/ci.yml)
+[![Custom release](https://img.shields.io/github/v/release/esadtatlipinar/Kumquat?style=flat-square&color=FF5E1A&label=custom%20build)](https://github.com/esadtatlipinar/Kumquat/releases/latest)
+[![Upstream CI](https://img.shields.io/github/actions/workflow/status/iandifilippo/Kumquat/ci.yml?style=flat-square&label=upstream%20tests)](https://github.com/iandifilippo/Kumquat/actions/workflows/ci.yml)
 ![Price: free](https://img.shields.io/badge/price-free-4ADE80?style=flat-square)
 
 **[Website](https://iandifilippo.github.io/Kumquat/)** · [Install](#install) · [How it works](#how-to-use) · [What it converts](#what-it-converts) · [Engines](#optional-engines) · [Automation](#automation-and-command-line) · [Make it yours](#make-it-yours) · [FAQ](#faq)
 
-<code>curl -fsSL https://raw.githubusercontent.com/iandifilippo/Kumquat/main/install.sh | bash</code>
+<strong><a href="https://github.com/esadtatlipinar/Kumquat/releases/latest">Download the self-contained custom DMG</a></strong>
 
 <br/><br/>
 
@@ -41,6 +44,16 @@ It's a native Swift app with no dependencies. Your files never leave your Mac: n
 **Highlights:** 60+ formats out of the box (images, PDF, Word, Markdown, EPUB, CSV/Excel/JSON, subtitles, video, audio, ZIP/RAR/7Z) · on-device background removal and OCR · Crop, Add Background, Resize, Compress, Merge, Split, Protect · progress right inside the ring · watch folders · a `kumquat` command · a ⌃⌥K shortcut for the Finder selection · 9 languages · fully themeable.
 
 ## Install
+
+### HAR + JSON custom build (this fork)
+
+Download the self-contained universal DMG from this fork's [latest release](https://github.com/esadtatlipinar/Kumquat/releases/latest), open it and drag **Kumquat** into Applications. On first launch, right-click the app and choose **Open**; if macOS blocks it, approve it in **System Settings → Privacy & Security**.
+
+This build adds the external plugin host, **HAR Minify** and **JSON LLM Ready**. The bundled plugin installs itself into Application Support on first launch. You do not need to install the official app first. Files stay local and originals are preserved. See [LOCAL_PLUGIN_HOST.md](LOCAL_PLUGIN_HOST.md) for implementation and maintenance details.
+
+### Original upstream build
+
+The instructions below install the original version without this fork's HAR and JSON actions.
 
 **One line in Terminal** (recommended, no security warning):
 
