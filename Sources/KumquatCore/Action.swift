@@ -48,18 +48,21 @@ public enum ToolID: String, CaseIterable, Sendable, Codable, Hashable {
 public enum KQAction: Hashable, Sendable, Codable {
     case convert(OutputFormat)
     case tool(ToolID)
+    case external(ExternalAction)
 
     /// Stable identifier, used to store which slices the user turned off.
     public var id: String {
         switch self {
         case .convert(let f): return "convert.\(f.rawValue)"
         case .tool(let t): return "tool.\(t.rawValue)"
+        case .external(let action): return action.id
         }
     }
 
     public var symbol: String {
         switch self {
         case .tool(let t): return t.symbol
+        case .external(let action): return action.symbol
         case .convert(let f):
             switch f {
             case .pdf: return "doc.richtext"

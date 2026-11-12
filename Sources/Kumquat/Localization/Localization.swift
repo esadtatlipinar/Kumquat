@@ -123,6 +123,7 @@ extension KQAction {
         switch self {
         case .convert(let f): return f.label
         case .tool(let t): return t.title
+        case .external(let action): return action.title
         }
     }
 
@@ -131,6 +132,7 @@ extension KQAction {
         switch self {
         case .convert(let f): return L("Converting to %@", f.label)
         case .tool(let t): return L("%@ in progress", t.title)
+        case .external(let action): return L("%@ in progress", action.title)
         }
     }
 }

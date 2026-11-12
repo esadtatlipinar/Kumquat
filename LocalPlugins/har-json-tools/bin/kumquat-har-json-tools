@@ -1,0 +1,53 @@
+#!/usr/bin/env python3
+"""Kumquat bridge for the local HAR + JSON Sadeleştirici. Standard library only."""
+from __future__ import annotations
+
+import importlib.util
+import json
+import os
+from pathlib import Path
+import sys
+
+
+def load_tool():
+    candidates = [
+        Path(__file__).resolve().parents[1] / "lib" / "har_kucultucu.py",
+        Path(os.environ.get("KUMQUAT_HAR_JSON_TOOL", "")) if os.environ.get("KUMQUAT_HAR_JSON_TOOL") else None,
+        Path.home() / "CascadeProjects" / "HAR Minifier" / "har_kucultucu.py",
+    ]
+    for candidate in candidates:
+        if candidate and candidate.is_file():
+            spec = importlib.util.spec_from_file_location("kumquat_har_json_core", candidate)
+            if spec and spec.loader:
+                module = importlib.util.module_from_spec(spec)
+                spec.loader.exec_module(module)
+                return module
+    raise RuntimeError("HAR + JSON tool core was not found. Reinstall the Kumquat plugin.")
+
+
+def main() -> int:
+    if len(sys.argv) != 3:
+        raise ValueError("Usage: kumquat-har-json-tools <har-minify|json-llm-ready> <input>")
+    action, raw_path = sys.argv[1:]
+    source = Path(raw_path).expanduser().resolve()
+    tool = load_tool()
+    if action == "har-minify":
+        result = tool.compress(source)
+        detail = f"{result['kept']}/{result['total']} requests kept · {result['removed']} removed"
+    elif action == "json-llm-ready":
+        result = tool.prepare_llm_json(source)
+        detail = "Lossless verified"
+        if result.get("records"):
+            detail += f" · {result['records']} unique · {result['duplicates']} duplicate refs"
+    else:
+        raise ValueError(f"Unknown action: {action}")
+    print(json.dumps({"outputs": [result["path"]], "detail": detail}, ensure_ascii=False, separators=(",", ":")))
+    return 0
+
+
+if __name__ == "__main__":
+    try:
+        raise SystemExit(main())
+    except Exception as exc:
+        print(str(exc), file=sys.stderr)
+        raise SystemExit(1)

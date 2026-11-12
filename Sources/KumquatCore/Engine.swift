@@ -68,6 +68,9 @@ public struct Engine: Sendable {
         switch action {
         case .convert(let format): return (try await convert(url, to: format), nil)
         case .tool(let tool): return try await apply(tool, to: url, parameters: parameters)
+        case .external(let external):
+            let result = try external.run(on: url)
+            return (result.outputs, result.detail)
         }
     }
 

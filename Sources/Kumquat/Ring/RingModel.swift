@@ -30,7 +30,9 @@ final class RingModel: ObservableObject {
 
     func load(files: [URL], settings: SettingsStore = .shared) {
         self.files = files
-        let convert = settings.ordered(ActionCatalog.convertActions(for: files).filter(settings.isEnabled)).map(RingItem.init)
+        let builtIn = ActionCatalog.convertActions(for: files)
+        let plugins = ExternalPluginCatalog.actions(for: files).map(KQAction.external)
+        let convert = settings.ordered((plugins + builtIn).filter(settings.isEnabled)).map(RingItem.init)
         var tools = settings.ordered(ActionCatalog.toolActions(for: files).filter(settings.isEnabled)).map(RingItem.init)
         // ZIP is hidden for images by default, but a ring with no tools at all is never useful.
         if tools.isEmpty, let zip = ActionCatalog.toolActions(for: files).first(where: { $0 == .tool(.zip) }) { tools = [RingItem(action: zip)] }

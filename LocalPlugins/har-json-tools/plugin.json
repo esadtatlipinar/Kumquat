@@ -1,0 +1,25 @@
+{
+  "schemaVersion": 1,
+  "id": "com.mustafaesad.har-json-tools",
+  "name": "HAR + JSON LLM Tools",
+  "actions": [
+    {
+      "id": "har-minify",
+      "title": "HAR Minify",
+      "symbol": "arrow.down.doc",
+      "extensions": ["har"],
+      "executable": "bin/kumquat-har-json-tools",
+      "arguments": ["har-minify", "{input}"],
+      "order": 10
+    },
+    {
+      "id": "json-llm-ready",
+      "title": "JSON LLM Ready",
+      "symbol": "brain.head.profile",
+      "extensions": ["json"],
+      "executable": "bin/kumquat-har-json-tools",
+      "arguments": ["json-llm-ready", "{input}"],
+      "order": 20
+    }
+  ]
+}

@@ -110,6 +110,9 @@ final class ActionRunner {
             parts.append("\(from) → \(format.label)")
             if let d = outcome.detail { parts.append(d) }
             parts.append(ByteText.string(outcome.outputBytes))
+        case .external:
+            if let d = outcome.detail { parts.append(d) }
+            parts.append(ByteText.change(from: outcome.inputBytes, to: outcome.outputBytes))
         }
         return parts.joined(separator: " · ")
     }

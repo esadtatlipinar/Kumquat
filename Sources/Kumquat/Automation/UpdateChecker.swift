@@ -57,6 +57,25 @@ final class UpdateChecker: ObservableObject {
     /// (which replaces the app and opens the new one), and Kumquat quits right away.
     func installUpdate() {
         let pid = ProcessInfo.processInfo.processIdentifier
+        let localUpdater = FileManager.default.homeDirectoryForCurrentUser
+            .appendingPathComponent("Library/Application Support/Kumquat/PluginHost/update.command")
+        if FileManager.default.isExecutableFile(atPath: localUpdater.path) {
+            let process = Process()
+            process.executableURL = localUpdater
+            process.arguments = [String(pid)]
+            process.standardInput = FileHandle.nullDevice
+            process.standardOutput = FileHandle.nullDevice
+            process.standardError = FileHandle.nullDevice
+            do {
+                try process.run()
+                ToastCenter.shared.showProgress(title: L("Updating Kumquat…"), total: 1)
+                DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { NSApp.terminate(nil) }
+                return
+            } catch {
+                ToastCenter.shared.showFailure(L("Couldn't finish"), detail: error.localizedDescription)
+                return
+            }
+        }
         let script = """
         while kill -0 \(pid) 2>/dev/null; do sleep 0.2; done
         curl -fsSL https://raw.githubusercontent.com/iandifilippo/Kumquat/main/install.sh | KUMQUAT_UPDATING=1 bash \

@@ -722,6 +722,7 @@ enum WatchChoices {
                 switch action {
                 case .convert(let f): title = L("Convert to %@", f.label)
                 case .tool(let t): title = "\(t.title) (\(kind.title))"
+                case .external(let item): title = item.title
                 }
                 out.append(Choice(id: action.id, title: title))
             }
