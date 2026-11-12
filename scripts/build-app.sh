@@ -23,6 +23,9 @@ rm -rf "$APP"
 mkdir -p "$APP/Contents/MacOS" "$APP/Contents/Resources"
 cp "$BIN" "$APP/Contents/MacOS/Kumquat"
 cp Resources/AppIcon.icns "$APP/Contents/Resources/AppIcon.icns"
+mkdir -p "$APP/Contents/Resources/DefaultPlugins"
+ditto LocalPlugins/har-json-tools "$APP/Contents/Resources/DefaultPlugins/har-json-tools"
+chmod 755 "$APP/Contents/Resources/DefaultPlugins/har-json-tools/bin/kumquat-har-json-tools"
 sed -e "s/__VERSION__/$VERSION/" -e "s/__BUILD__/$BUILD/" Resources/Info.plist > "$APP/Contents/Info.plist"
 for lang in en es; do mkdir -p "$APP/Contents/Resources/$lang.lproj"; done
 

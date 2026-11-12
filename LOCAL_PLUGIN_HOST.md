@@ -33,7 +33,19 @@ Kumquat verifies a zero exit status, parses the response, verifies every output 
 - `.har` → **HAR Minify**
 - `.json` → **JSON LLM Ready**
 
-Both write collision-safe outputs beside the input via the already verified `HAR Minifier/har_kucultucu.py` core. The installer snapshots that core into the plugin directory, so the wheel action does not depend on a running web UI.
+Both write collision-safe outputs beside the input via the vendored, standard-library-only `har_kucultucu.py` core. The core ships inside the plugin, so the wheel action does not depend on a running web UI or another project checkout.
+
+## Install from the DMG
+
+The release DMG is self-contained. Drag **Kumquat.app** to **Applications** and open it. On first launch, Kumquat copies the bundled versioned plugin into:
+
+```text
+~/Library/Application Support/Kumquat/Plugins/har-json-tools
+```
+
+The bootstrap upgrades only this bundled plugin and never touches unrelated user plugins. The app's update check points to this fork's releases; it never installs the stock upstream build over the plugin host.
+
+The distributed app is ad-hoc signed unless a Developer ID is supplied at build time. On a different Mac, use **Right-click → Open** once, or approve it in **System Settings → Privacy & Security**. Notarized one-click launch requires an Apple Developer ID and notarization.
 
 ## Install and update
 

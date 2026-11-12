@@ -4,8 +4,8 @@ import AppKit
 /// and it can be turned off in Settings → About.
 final class UpdateChecker: ObservableObject {
     static let shared = UpdateChecker()
-    static let releasesURL = URL(string: "https://github.com/iandifilippo/Kumquat/releases/latest")!
-    private let api = URL(string: "https://api.github.com/repos/iandifilippo/Kumquat/releases/latest")!
+    static let releasesURL = URL(string: "https://github.com/esadtatlipinar/Kumquat/releases/latest")!
+    private let api = URL(string: "https://api.github.com/repos/esadtatlipinar/Kumquat/releases/latest")!
     private var timer: Timer?
 
     /// The newer version, once found.
@@ -76,25 +76,8 @@ final class UpdateChecker: ObservableObject {
                 return
             }
         }
-        let script = """
-        while kill -0 \(pid) 2>/dev/null; do sleep 0.2; done
-        curl -fsSL https://raw.githubusercontent.com/iandifilippo/Kumquat/main/install.sh | KUMQUAT_UPDATING=1 bash \
-          || open "\(Self.releasesURL.absoluteString)"
-        """
-        let process = Process()
-        process.executableURL = URL(fileURLWithPath: "/bin/bash")
-        process.arguments = ["-c", script]
-        // Detach from Kumquat so the helper outlives it.
-        process.standardInput = FileHandle.nullDevice
-        process.standardOutput = FileHandle.nullDevice
-        process.standardError = FileHandle.nullDevice
-        do {
-            try process.run()
-        } catch {
-            NSWorkspace.shared.open(Self.releasesURL)
-            return
-        }
-        ToastCenter.shared.showProgress(title: L("Updating Kumquat…"), total: 1)
-        DispatchQueue.main.asyncAfter(deadline: .now() + 0.8) { NSApp.terminate(nil) }
+        // A stock Kumquat installer would remove this build's plugin host. Friends
+        // who installed the DMG are therefore sent only to this fork's releases.
+        NSWorkspace.shared.open(Self.releasesURL)
     }
 }

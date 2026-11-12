@@ -11,6 +11,7 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
     private let statusDrop = StatusDropTarget()
 
     func applicationDidFinishLaunching(_ notification: Notification) {
+        installBundledPlugins()
         NSApp.setActivationPolicy(settings.showDockIcon ? .regular : .accessory)
         // Look for optional engines early, off the main thread.
         DispatchQueue.global(qos: .utility).async { _ = Engines.current }
@@ -49,6 +50,18 @@ final class AppDelegate: NSObject, NSApplicationDelegate, NSMenuDelegate {
             .debounce(for: .milliseconds(50), scheduler: RunLoop.main)
             .sink { [weak self] in self?.statusItem?.menu = self?.makeMenu() }
             .store(in: &cancellables)
+    }
+
+    private func installBundledPlugins() {
+        guard let resources = Bundle.main.resourceURL,
+              let applicationSupport = FileManager.default.urls(for: .applicationSupportDirectory, in: .userDomainMask).first else {
+            return
+        }
+        do {
+            _ = try BundledPluginInstaller.installDefaults(from: resources, into: applicationSupport)
+        } catch {
+            NSLog("Kumquat could not install bundled plugins: %@", error.localizedDescription)
+        }
     }
 
     /// Smoke test of the whole UI path: ring → slice → runner → toast → file on disk.

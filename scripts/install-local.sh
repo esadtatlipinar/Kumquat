@@ -5,15 +5,9 @@ repo_dir="${0:A:h:h}"
 plugin_source="$repo_dir/LocalPlugins/har-json-tools"
 plugin_root="$HOME/Library/Application Support/Kumquat/Plugins/har-json-tools"
 host_root="$HOME/Library/Application Support/Kumquat/PluginHost"
-tool_core="$HOME/CascadeProjects/HAR Minifier/har_kucultucu.py"
 installed_app="/Applications/Kumquat.app"
 backup_root="$HOME/Backups/Kumquat"
 stamp="$(date +%Y%m%d-%H%M%S)"
-
-if [[ ! -f "$tool_core" ]]; then
-  print -u2 "HAR + JSON core bulunamadı: $tool_core"
-  exit 1
-fi
 
 cd "$repo_dir"
 if [[ "${1:-}" != "--use-existing-build" ]]; then
@@ -32,8 +26,6 @@ if [[ -e "$plugin_root" ]]; then
   trash "$plugin_root"
 fi
 ditto "$plugin_source" "$plugin_root"
-mkdir -p "$plugin_root/lib"
-ditto "$tool_core" "$plugin_root/lib/har_kucultucu.py"
 chmod 755 "$plugin_root/bin/kumquat-har-json-tools"
 ln -sfn "$repo_dir/scripts/update-local.command" "$host_root/update.command"
 
